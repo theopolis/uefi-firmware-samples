@@ -8,6 +8,7 @@ from uefi_firmware.misc import checker
 types = {
     "DellPFS": "dell_pfs",
     "UEFIFirmwareVolume": "uefi_volume",
+    "FlashDescriptor": "flash",
 }
 
 def test_files(files, type_name):
