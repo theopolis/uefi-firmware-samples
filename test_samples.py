@@ -9,6 +9,7 @@ types = {
     "DellPFS": "dell_pfs",
     "UEFIFirmwareVolume": "uefi_volume",
     "FlashDescriptor": "flash",
+    "IntelME": "intel_me",
 }
 
 def test_files(files, type_name):
@@ -23,7 +24,7 @@ def test_files(files, type_name):
                 matched_parser = tester().parser
                 break
         if matched_type is None:
-            print "Cannot parse (%s): No matched type." % sample
+            print ("Cannot parse (%s): No matched type." % sample)
             return 1
         if matched_type != type_name:
             print ("Problem parsing (%s): mismatched type " +
@@ -33,13 +34,24 @@ def test_files(files, type_name):
         try:
             status = firmware.process()
         except Exception as e:
-            print "Exception parsing (%s): (%s)." % (sample, str(e))
+            # Wrap 'process' in exception handling for a pretty print.
+            print ("Exception parsing (%s): (%s)." % (sample, str(e)))
             return 1
 
+        # Check that 'process' does not encounter invalid formats/errors.
         if not status:
-            print "Error parsing (%s): failure in process." % (sample)
+            print ("Error parsing (%s): failure in process." % (sample))
             return 1
-        print "Parsing (%s): success" % (sample)
+
+        # Attempt to iterate each of the nested/parsed objects.
+        try:
+            for object in firmware.iterate_objects():
+                pass
+        except Exception as e:
+            print ("Exception iterating (%s): (%s)." % (sample, str(e)))
+            return 1
+
+        print ("Parsing (%s): success" % (sample))
     return 0
 
 def get_files(dir):
