@@ -10,6 +10,7 @@ types = {
     "UEFIFirmwareVolume": "uefi_volume",
     "FlashDescriptor": "flash",
     "IntelME": "intel_me",
+    "EFICapsule": "efi_capsule",
 }
 
 def test_files(files, type_name):
