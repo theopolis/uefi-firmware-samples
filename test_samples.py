@@ -20,6 +20,7 @@ TYPES = {
 # in the addition/removal of objects.
 FILES = {
     "dell_pfs/M4600A16.pfs": 2723,
+    "dell_pfs/E5X70-1.3.6.pfs": 2953,
     "flash/Latitude-E6410-A10.flash": 1186,
     "intel_me/dell_1176upd.me": 2,
     "uefi_volume/MINNOW1.fd": 664,
