@@ -1,0 +1,7 @@
+{
+    "DellPFS": "dell_pfs",
+    "UEFIFirmwareVolume": "uefi_volume",
+    "FlashDescriptor": "flash",
+    "IntelME": "intel_me",
+    "EFICapsule": "efi_capsule"
+}
