@@ -1,31 +1,21 @@
 #!/usr/bin/env python
 
 import os
+import json
 
 import uefi_firmware
 from uefi_firmware.utils import flatten_firmware_objects
 
 # The types set bins various folder representing firmware types
 # to the expected 'detected' type from the parser code.
-TYPES = {
-    "DellPFS": "dell_pfs",
-    "UEFIFirmwareVolume": "uefi_volume",
-    "FlashDescriptor": "flash",
-    "IntelME": "intel_me",
-    "EFICapsule": "efi_capsule",
-}
+with open('TYPES.json', 'r') as fh:
+    TYPES = json.loads(fh.read())
 
 # The files set binds explicit file names to the number of ojects
 # detected. Modifications to the codebase should have expected changes
 # in the addition/removal of objects.
-FILES = {
-    "dell_pfs/M4600A16.pfs": 2723,
-    "dell_pfs/E5X70-1.3.6.pfs": 2953,
-    "flash/Latitude-E6410-A10.flash": 1186,
-    "intel_me/dell_1176upd.me": 2,
-    "uefi_volume/MINNOW1.fd": 664,
-    "efi_capsule/MBP111_0138_B16_LOCKED.scap": 3043,
-}
+with open('OBJECTS.json', 'r') as fh:
+    OBJECTS = json.loads(fh.read())
 
 class Status(object):
     def __init__(self, code, firmware=None):
@@ -69,14 +59,14 @@ def test_file(sample, type_name):
 
 
 def test_items(sample, firmware):
-    if sample not in FILES:
+    if sample not in OBJECTS:
         return Status(0)
     objects = firmware.iterate_objects()
     all_objects = flatten_firmware_objects(objects)
     num_objects = len(all_objects)
-    if num_objects != FILES[sample]:
+    if num_objects != OBJECTS[sample]:
         print ("Inconsistency parsing (%s): expected %d objects, found: %d" % (
-            sample, FILES[sample], num_objects))
+            sample, OBJECTS[sample], num_objects))
         print ("This 'may' be expected if this change improves the object " +
             "discovery/parsing logic.")
         return Status(1)
