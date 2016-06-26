@@ -1,11 +1,11 @@
 {
-    "dell_pfs/M4600A16.pfs": 2723,
-    "dell_pfs/E5X70-1.3.6.pfs": 2953,
+    "dell_pfs/M4600A16.pfs": 2738,
+    "dell_pfs/E5X70-1.3.6.pfs": 2981,
     "flash/Latitude-E6410-A10.flash": 1187,
     "intel_me/MBP112_0138_B16_f1143a53-cbeb-4833-a4dc-0826e063ec08.me": 19,
     "intel_me/ESX70-1.3.6.me": 13,
     "intel_me_partition/dell_1176upd.me": 14,
     "uefi_volume/Kairos10CUG2.0.fv": 1722,
     "uefi_volume/MINNOW1.fd": 664,
-    "efi_capsule/MBP111_0138_B16_LOCKED.scap": 3043
+    "efi_capsule/MBP111_0138_B16_LOCKED.scap": 3085
 }
