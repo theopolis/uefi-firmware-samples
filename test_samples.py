@@ -2,6 +2,7 @@
 
 import os
 import json
+import traceback
 
 import uefi_firmware
 from uefi_firmware.utils import flatten_firmware_objects
@@ -52,6 +53,7 @@ def test_file(sample, type_name):
             pass
     except Exception as e:
         print ("Exception iterating (%s): (%s)." % (sample, str(e)))
+        print traceback.print_exc()
         return Status(1)
 
     print ("Parsing (%s): success" % (sample))
