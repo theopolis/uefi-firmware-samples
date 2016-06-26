@@ -3,5 +3,6 @@
     "UEFIFirmwareVolume": "uefi_volume",
     "FlashDescriptor": "flash",
     "IntelME": "intel_me",
+    "IntelMEPartitionManifest": "intel_me_partition",
     "EFICapsule": "efi_capsule"
 }
