@@ -81,7 +81,7 @@ def get_files(dir):
     for base, dirnames, filenames in os.walk(dir):
         for filename in filenames:
             files.append(os.path.join(base, filename))
-    return files      
+    return files
 
 
 if __name__ == "__main__":

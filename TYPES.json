@@ -4,5 +4,6 @@
     "FlashDescriptor": "flash",
     "IntelME": "intel_me",
     "IntelMEPartitionManifest": "intel_me_partition",
-    "EFICapsule": "efi_capsule"
+    "EFICapsule": "efi_capsule",
+    "UEFIFirmwareVolume": "lenovo_fl"
 }
