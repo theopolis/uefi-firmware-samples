@@ -29,22 +29,22 @@ def test_file(sample, type_name):
         sample_data = fh.read()
     parser = uefi_firmware.AutoParser(sample_data)
     if parser.type() is None:
-        print ("Cannot parse (%s): No matched type." % sample)
+        print("Cannot parse (%s): No matched type." % sample)
         return Status(1)
     if parser.type() != type_name:
-        print ("Problem parsing (%s): mismatched type " +
+        print("Problem parsing (%s): mismatched type " +
             "expected %s, got %s") % (sample, parser.type(), type_name)
         return Status(1)
     try:
         firmware = parser.parse()
     except Exception as e:
         # Wrap 'process' in exception handling for a pretty print.
-        print ("Exception parsing (%s): (%s)." % (sample, str(e)))
+        print("Exception parsing (%s): (%s)." % (sample, str(e)))
         return Status(1)
 
     # Check that 'process' does not encounter invalid formats/errors.
     if firmware is None:
-        print ("Error parsing (%s): failure in process." % (sample))
+        print("Error parsing (%s): failure in process." % (sample))
         return Status(1)
 
     # Attempt to iterate each of the nested/parsed objects.
@@ -52,11 +52,11 @@ def test_file(sample, type_name):
         for _object in firmware.iterate_objects():
             pass
     except Exception as e:
-        print ("Exception iterating (%s): (%s)." % (sample, str(e)))
-        print traceback.print_exc()
+        print("Exception iterating (%s): (%s)." % (sample, str(e)))
+        print(traceback.print_exc())
         return Status(1)
 
-    print ("Parsing (%s): success" % (sample))
+    print("Parsing (%s): success" % (sample))
     return Status(0, firmware)
 
 
@@ -67,12 +67,12 @@ def test_items(sample, firmware):
     all_objects = flatten_firmware_objects(objects)
     num_objects = len(all_objects)
     if num_objects != OBJECTS[sample]:
-        print ("Inconsistency parsing (%s): expected %d objects, found: %d" % (
+        print("Inconsistency parsing (%s): expected %d objects, found: %d" % (
             sample, OBJECTS[sample], num_objects))
-        print ("This 'may' be expected if this change improves the object " +
+        print("This 'may' be expected if this change improves the object " +
             "discovery/parsing logic.")
         return Status(1)
-    print ("Listing (%s): item count: %d" % (sample, num_objects))
+    print("Listing (%s): item count: %d" % (sample, num_objects))
     return Status(0)
 
 
@@ -80,12 +80,12 @@ def get_files(dir):
     files = []
     for base, dirnames, filenames in os.walk(dir):
         for filename in filenames:
-            files.append(os.path.join(base, filename))
+            files.append(os.path.join(base, filename).replace(os.path.sep, '/'))
     return files
 
 
 if __name__ == "__main__":
-    for type_name, samples_dir in TYPES.iteritems():
+    for type_name, samples_dir in TYPES.items():
         sample_files = get_files(samples_dir)
         for sample in sample_files:
             status = test_file(sample, type_name)
