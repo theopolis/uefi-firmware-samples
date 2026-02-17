@@ -85,7 +85,7 @@ def get_files(dir):
 
 
 if __name__ == "__main__":
-    for type_name, samples_dir in TYPES.items():
+    for type_name, samples_dir in TYPES:
         sample_files = get_files(samples_dir)
         for sample in sample_files:
             status = test_file(sample, type_name)
