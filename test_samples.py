@@ -7,6 +7,8 @@ import traceback
 import uefi_firmware
 from uefi_firmware.utils import flatten_firmware_objects
 
+import dictdiffer
+
 # The types set bins various folder representing firmware types
 # to the expected 'detected' type from the parser code.
 with open('TYPES.json', 'r') as fh:
@@ -75,6 +77,55 @@ def test_items(sample, firmware):
     print("Listing (%s): item count: %d" % (sample, num_objects))
     return Status(0)
 
+def test_repack(sample, type_name, firmware):
+    if not hasattr(firmware, 'build'):
+        return Status(0)
+    repacked = firmware.build(generate_checksum=True)
+
+    parser = uefi_firmware.AutoParser(repacked)
+    if parser.type() is None:
+        print("Cannot parse (%s (repacked)): No matched type." % sample)
+        return Status(1)
+    if parser.type() != type_name:
+        print("Problem parsing (%s (repacked)): mismatched type " +
+            "expected %s, got %s") % (sample, parser.type(), type_name)
+        return Status(1)
+    try:
+        repacked_firmware = parser.parse()
+    except Exception as e:
+        # Wrap 'process' in exception handling for a pretty print.
+        print("Exception parsing (%s (repacked)): (%s)." % (sample, str(e)))
+        return Status(1)
+
+    # Check that 'process' does not encounter invalid formats/errors.
+    if repacked_firmware is None:
+        print("Error parsing (%s (repacked)): failure in process." % (sample))
+        return Status(1)
+
+    repacked_dict = repacked_firmware.to_dict()
+    firmware_dict = firmware.to_dict()
+
+
+    result = dictdiffer.diff(firmware_dict, repacked_dict)
+
+    for (diff, location, change) in dictdiffer.diff(firmware_dict, repacked_dict):
+        # We can ignore some size diffs
+        if diff == "change" and isinstance(location, list) and location[-1] == "size":
+            node = firmware_dict
+            for key in location[:-1]:
+                node = node[key]
+            # we can ignore LZMA section size diffs: our LZMA compression settings may differ
+            if 'sectionType' in node and node['type'] == 0x2: # GUID Defined
+                if node['data']['guid'] == uefi_firmware.structs.uefi_structs.FIRMWARE_GUIDED_GUIDS['LZMA_COMPRESSED']:
+                    continue
+            # We can ignore block size changes because of above LZMA compression
+            if len(location) >= 3 and location[-3] == "blocks":
+                continue
+        print("Repacked %s did not match original: %s %s %s" % (sample, diff, location, change))
+        return Status(1)
+
+    return Status(0)
+
 
 def get_files(dir):
     files = []
@@ -91,7 +142,11 @@ if __name__ == "__main__":
             status = test_file(sample, type_name)
             if status.code > 0:
                 exit(status.code)
-            status = test_items(sample, status.firmware)
+            firmware = status.firmware
+            status = test_items(sample, firmware)
+            if status.code > 0:
+                exit(status.code)
+            status = test_repack(sample, type_name, firmware)
             if status.code > 0:
                 exit(status.code)
     exit(0)

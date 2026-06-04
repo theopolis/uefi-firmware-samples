@@ -7,6 +7,8 @@
     "intel_me_partition/dell_1176upd.me": 14,
     "uefi_volume/Kairos10CUG2.0.fv": 1854,
     "uefi_volume/MINNOW1.fd": 668,
+    "uefi_volume/OVMF_CODE.fd": 719,
+    "uefi_volume/uefi_t26x_general_RELEASE.bin": 762,
     "efi_capsule/MBP111_0138_B16_LOCKED.scap": 3139,
-    "lenovo_fl/8duj28us.fl1": 2509
+    "lenovo_fl/8duj28us.fl1": 2508
 }
