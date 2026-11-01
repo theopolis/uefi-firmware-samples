@@ -4,6 +4,10 @@
         "dell_pfs"
     ],
     [
+        "DellUpdateBinary",
+        "dell_update"
+    ],
+    [
         "UEFIFirmwareVolume",
         "uefi_volume"
     ],
