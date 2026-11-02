@@ -78,8 +78,7 @@ def test_items(sample, firmware):
     return Status(0)
 
 def test_repack(sample, type_name, firmware):
-    # Comparing a repack needs to_dict, which PFS and ME objects do not have.
-    if not hasattr(firmware, 'build') or not hasattr(firmware, 'to_dict'):
+    if not hasattr(firmware, 'build'):
         return Status(0)
     repacked = firmware.build(generate_checksum=True)
 
